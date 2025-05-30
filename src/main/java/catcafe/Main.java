@@ -1,5 +1,8 @@
 package catcafe;
 
+import tree.InOrderVisitor;
+import tree.PostOrderVisitor;
+
 /** Starter for the cat-café task. */
 public class Main {
     /**
@@ -17,13 +20,31 @@ public class Main {
 
         System.out.println("Es schnurren " + cafe.getCatCount() + " Samtpfötchen.");
 
-        FelineOverLord meow = cafe.getCatByWeight(3, 4);
-        if (meow != null) System.out.println("Gewicht [3,4]: " + meow);
+        //getCatByWeight gibt nun Optional zurück
+        cafe.getCatByWeight(3, 4).ifPresentOrElse(
+            meow -> System.out.println("Gewicht [3,4]: " + meow),
+            () -> System.out.println("Keine Katze mit Gewicht [3,4] gefunden")
+        );
 
-        meow = cafe.getCatByName("Morticia");
-        if (meow != null) System.out.println("Name 'Morticia': " + meow);
+        //getCatByName gibt nun Optional zurück
+        cafe.getCatByName("Morticia").ifPresentOrElse(
+            meow -> System.out.println("Name 'Morticia': " + meow),
+            () -> System.out.println("Keine Katze mit  Namen 'Morticia' gefunden")
+        );
 
-        meow = cafe.getCatByName("Miss Chief Sooky");
-        if (meow != null) System.out.println("Name 'Miss Chief Sooky': " + meow);
+        //getCatByName gibt nun Optional zurück
+        cafe.getCatByName("Miss Chief Sooky").ifPresentOrElse(
+            meow -> System.out.println("Name 'Miss Chief Sooky': " + meow),
+            () -> System.out.println("Keine Katze mit  Namen 'Miss Chief Sooky' gefunden.")
+        );
+
+        InOrderVisitor<FelineOverLord> inorder = new InOrderVisitor<>();
+        String result = cafe.accept(inorder);
+        System.out.println("InOrder-Ausgabe: " + result);
+
+        // Neu: PostOrder Traversierung ebenfalls aufrufen
+        PostOrderVisitor<FelineOverLord> postorder = new PostOrderVisitor<>();
+        String postorderResult = cafe.accept(postorder);
+        System.out.println("PostOrder-Ausgabe: " + postorderResult);
     }
 }
